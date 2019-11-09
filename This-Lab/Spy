@@ -1,0 +1,31 @@
+function spy(object, method) {
+    let originalMethod = object[method];
+
+    const result = {
+        count: 0
+    }
+
+    object[method] = function() {
+        result.count++;
+        return originalMethod.apply(object, arguments)
+    }
+    return result;
+}
+
+let obj = {
+    method:()=>"invoked"
+}
+let spy1 = spy(obj,"method");
+
+obj.method();
+obj.method();
+obj.method();
+
+console.log(spy1) // { count: 3 }
+
+
+let spy2 = spy(console,"log");
+
+console.log(spy2); // { count: 1 }
+console.log(spy2); // { count: 2 }
+console.log(spy2); // { count: 3 }
